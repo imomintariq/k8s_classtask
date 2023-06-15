@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coin-changing-app
+spec:
+  selector:
+    matchLabels:
+      app: coin-changing-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: coin-changing-app
+    spec:
+      containers:
+        - name: coin-changing-app-test
+          image: docker.io/imomintariq/mlops_classtask:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: coin-changing-service
+spec:
+  selector:
+    app: coin-changing-app
+  ports:
+    - protocol: "TCP"
+      port: 8080
+  type: LoadBalancer
